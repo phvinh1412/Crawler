@@ -1,48 +1,33 @@
 package main
 
 import (
-	"crypto/tls"
+	//"crypto/tls"
 	"fmt"
-	//"io/ioutil"
+	"io/ioutil"
 	"net/http"
-	"os"
-	//io "vinh.crawler/ultilities"
-	"github.com/steelx/extractlinks"
+	io "vinh.crawler/ultilities"
+	//"github.com/steelx/extractlinks"
 )
 
 func init() {  
 	println("main package initialized")
 }
 
-func main() {
-	
-	usingUrl := "https://vnexpress.net"
-
-	tls_config := &tls.Config{
-		InsecureSkipVerify: true,
-	}
-	transport := &http.Transport{
-		TLSClientConfig: tls_config,
-	}
-	client := &http.Client{
-		Transport: transport,
-	}
-
-	response, err := client.Get(usingUrl)
-
-	checkError(err)
+func MakeRequest( url string) string {
+	response, err := http.Get(url)
 	defer response.Body.Close()
+	io.CheckError(err)
 
-	links, err := extractlinks.All(response.Body)
-	checkError(err)
-	for i, link := range links{
-		fmt.Printf("Index: %v\tLink: %v\n",i, link)
-	}
+	body, _ := ioutil.ReadAll(response.Body)
+	return string(body)
 }
 
-func checkError(err error) {
-	if err != nil {
-		fmt.Print("Error: ", err)
-		os.Exit(1)
-	}
+func main() {
+	fmt.Printf("Type using url: ")
+	var usingUrl string
+	fmt.Scanln(&usingUrl) 
+
+	body := MakeRequest (usingUrl)
+	fmt.Printf(body)
+
 }
