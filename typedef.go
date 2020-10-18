@@ -1,8 +1,8 @@
 package main
 
 type Link struct {
-	url string,
-	text string,
+	url string
+	text string
 	depth string
 }
 
