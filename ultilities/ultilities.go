@@ -36,6 +36,12 @@ func ExtractLinks(usingUrl string){
 	}
 }
 
+func GetText () string {
+	fmt.Printf("Type using url: ")
+	var txt string
+	fmt.Scanln(&txt) 
+	return txt
+}
 func CheckError(err error) {
 	if err != nil {
 		fmt.Print("Error: ", err)
