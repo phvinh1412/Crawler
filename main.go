@@ -1,13 +1,13 @@
 package main
 
 import (
-	"crypto/tls"
+	//"crypto/tls"
 	"fmt"
 	//"io/ioutil"
-	"net/http"
-	"os"
-	//io "vinh.crawler/ultilities"
-	"github.com/steelx/extractlinks"
+	//"net/http"
+	io "vinh.crawler/ultilities"
+	scraper "vinh.crawler/scraper"
+	//"github.com/steelx/extractlinks"
 )
 
 func init() {  
@@ -15,34 +15,8 @@ func init() {
 }
 
 func main() {
-	
-	usingUrl := "https://vnexpress.net"
+	url := io.GetText()
+	body := scraper.GetListing (url)
+	fmt.Printf(body)
 
-	tls_config := &tls.Config{
-		InsecureSkipVerify: true,
-	}
-	transport := &http.Transport{
-		TLSClientConfig: tls_config,
-	}
-	client := &http.Client{
-		Transport: transport,
-	}
-
-	response, err := client.Get(usingUrl)
-
-	checkError(err)
-	defer response.Body.Close()
-
-	links, err := extractlinks.All(response.Body)
-	checkError(err)
-	for i, link := range links{
-		fmt.Printf("Index: %v\tLink: %v\n",i, link)
-	}
-}
-
-func checkError(err error) {
-	if err != nil {
-		fmt.Print("Error: ", err)
-		os.Exit(1)
-	}
 }
